@@ -1,38 +1,66 @@
-// get all needed DOM elemets
-const form = document.getElementedById("checkInForm");
+// get all needed DOM elements
+const form = document.getElementById("checkInForm");
 const nameInput = document.getElementById("attendeeName");
 const teamSelect = document.getElementById("teamSelect");
 
-//track attendene
+// UI elements
+const attendeeCountEl = document.getElementById("attendeeCount");
+const progressBar = document.getElementById("progressBar");
+const waterCountEl = document.getElementById("waterCount");
+const zeroCountEl = document.getElementById("zeroCount");
+const powerCountEl = document.getElementById("powerCount");
+const greetingEl = document.getElementById("greeting");
+
+// track attendance
 let count = 0;
 const maxCount = 50;
 
-// handle submisson dorm
-form.addEventListener("submit", function (event){
+// handle submission form
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-event.preventDefault();
+  const name = nameInput.value.trim();
+  const team = teamSelect.value;
+  const teamName = teamSelect.selectedOptions[0].text;
 
-const name = nameInput.value;
-const team = teamSelect.value;
-const teamName = teamSelect.selectedOptions[0].text;
+  if (!name || !team) {
+    return;
+  }
 
-console.log(name, teamName);
+  // debug logs
+  console.log(name, teamName);
 
-//increment
-count++
-console.log("total check-ins", count);
+  // increment
+  count = count + 1;
 
-// update prog bar
+  console.log("total check-ins", count);
 
-const percent = Math.round((count/maxCount) * 100) +"%";
-console.log('progress:' ${percent});
+  // update progress
+  const percent = Math.round((count / maxCount) * 100) + "%";
+  attendeeCountEl.textContent = count;
+  progressBar.style.width = percent;
 
-// update team counter
-const teamCounter = document.getElementById(team, + "count")
-teamCounter.textContent = parseInt( teamCounter.textContent) + 1;
+  console.log(`progress: ${percent}`);
 
-//welcome message
-const message =' welcome, ${name} from ${teamName}';
-console.log(message);
-form.reset();
-}); 
+  // update team counter
+  var teamCounter = null;
+  if (team === "water") {
+    teamCounter = waterCountEl;
+  } else if (team === "zero") {
+    teamCounter = zeroCountEl;
+  } else if (team === "power") {
+    teamCounter = powerCountEl;
+  }
+
+  if (teamCounter) {
+    teamCounter.textContent = parseInt(teamCounter.textContent || "0", 10) + 1;
+    console.log(`Updated ${team} count to ${teamCounter.textContent}`);
+  }
+
+  // welcome message
+  var message = `Welcome, ${name} from ${teamName}!`;
+  greetingEl.textContent = message;
+  console.log(message);
+
+  form.reset();
+});
