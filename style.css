@@ -25,7 +25,8 @@ body {
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(
+  background:
+    linear-gradient(
       135deg,
       rgba(0, 153, 219, 0.9) 0%,
       rgba(0, 104, 181, 0.9) 50%,
@@ -340,6 +341,38 @@ select {
 }
 .team-card.power {
   background-color: #fff7ed;
+}
+
+/* Winner highlight */
+.team-card.winner {
+  border: 3px solid #ffd166;
+  box-shadow: 0 10px 30px rgba(255, 209, 102, 0.24);
+  transform: translateY(-6px) scale(1.02);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Celebration message */
+#greeting {
+  display: none;
+}
+
+.celebration {
+  background: linear-gradient(90deg, #fff7e6, #e8f8ff);
+  border: 2px solid #ffd166;
+  color: #073b4c;
+  font-weight: 700;
+  animation: sparkle 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes sparkle {
+  from {
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+  to {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .team-name {

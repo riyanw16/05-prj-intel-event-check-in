@@ -60,7 +60,47 @@ form.addEventListener("submit", function (event) {
   // welcome message
   var message = `Welcome, ${name} from ${teamName}!`;
   greetingEl.textContent = message;
+  greetingEl.style.display = "block";
+  greetingEl.classList.remove("success-message", "celebration");
   console.log(message);
+
+  // if goal reached, show celebration and highlight winning team
+  if (count >= maxCount) {
+    // read current team counts
+    var water = parseInt(waterCountEl.textContent || "0", 10);
+    var zero = parseInt(zeroCountEl.textContent || "0", 10);
+    var power = parseInt(powerCountEl.textContent || "0", 10);
+
+    var maxTeamCount = Math.max(water, zero, power);
+    var winnerName = "";
+    var winnerCard = null;
+
+    if (maxTeamCount === water) {
+      winnerName = "Team Water Wise";
+      winnerCard = document.querySelector(".team-card.water");
+    }
+    if (maxTeamCount === zero && zero >= water) {
+      winnerName = "Team Net Zero";
+      winnerCard = document.querySelector(".team-card.zero");
+    }
+    if (maxTeamCount === power && power >= zero && power >= water) {
+      winnerName = "Team Renewables";
+      winnerCard = document.querySelector(".team-card.power");
+    }
+
+    // remove previous winners and add to current
+    document.querySelectorAll(".team-card").forEach(function (el) {
+      el.classList.remove("winner");
+    });
+    if (winnerCard) {
+      winnerCard.classList.add("winner");
+    }
+
+    // show celebration message
+    greetingEl.textContent = `Goal reached! 🎉 Winning team: ${winnerName}`;
+    greetingEl.classList.add("success-message", "celebration");
+    console.log(greetingEl.textContent);
+  }
 
   form.reset();
 });
